@@ -43,7 +43,7 @@
           <b-card no-body class="mb-1">
             <b-collapse id="accordion-2" accordion="my-accordion" role="tabpanel" visible>
               <b-card-body>
-                <form id="intv">
+                <form id="keeper">
                   <div class="form-group">
                     <label for="lab">Label:</label>
                     <input type="text" class="form-control" id="lab" v-model="CurrName">
@@ -55,11 +55,17 @@
                 </form>
               </b-card-body>
             </b-collapse>
-            <div class="action" v-for="(intv, i) in Keeps">
-              <select class="form-control" id="revive">
-                <option>{{intv.Label}}</option>
-              </select>
-            </div>
+            <ul class="list-group" v-for="(intv, i) in Keeps">
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-7">{{intv.Label}}</div>
+                  <div class="container col-5">
+                    <b-button v-on:click="gotoKeep(i)">Apply</b-button>
+                    <b-button v-on:click="removeKeep(i)">x</b-button>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </b-card>
         </div>
       </div>
@@ -68,7 +74,9 @@
     <div class="col-4">
       <h4>Value</h4>
       <h5>Intervention: </h5>
-      <p>{{IntvCurr}}</p>
+      <p>{{CurrText}}</p>
+      <h3>Simulation: </h3>
+      <p>{{CurrSource}}</p>
     </div>
   </div>
 </div>
@@ -110,6 +118,8 @@ export default {
       IntvForm: intvs,
       Intv0: i0,
       IntvCurr: i0,
+      CurrText: "Baseline",
+      CurrSource: "",
       Keeps: [],
       CurrName: "untitle"
     }
@@ -121,12 +131,15 @@ export default {
     updateInterventions(evt) {
       evt.preventDefault();
       this.CurrName = "";
+      this.CurrText = this.IntvForm.filter(d => d.Clicked).map(d => d.Name + ": " + d.Pars[0].value).join("; ");
+      this.CurrSource = "New simulation";
       this.IntvCurr = JSON.stringify(this.IntvForm);
     },
     resetInterventions(evt) {
       evt.preventDefault();
-
       this.CurrName = "";
+      this.CurrText = "Baseline";
+      this.CurrSource = "";
       this.IntvForm = JSON.parse(this.Intv0);
       this.IntvCurr = this.Intv0
     },
@@ -139,10 +152,21 @@ export default {
     },
     clearInterventions(evt) {
       evt.preventDefault();
+      this.Keeps = [];
+    },
+    gotoKeep(i) {
+      const sel = this.Keeps[i];
 
-      this.resetInterventions(evt);
-    }
+      this.CurrName = sel.Label;
+      this.IntvForm = JSON.parse(sel.Intv);
+      this.IntvCurr = sel.Intv
+      this.CurrText = this.IntvForm.filter(d => d.Clicked).map(d => d.Name + ": " + d.Pars[0].value).join("; ");
+      this.CurrSource = "Loaded from " + sel.Label;
 
+    },
+    removeKeep(i) {
+      this.Keeps = this.Keeps.filter((d, key) => key !== i);
+    },
   }
 }
 </script>

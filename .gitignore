@@ -15,4 +15,5 @@ node_modules/
 
 # vuepress build output
 .vuepress/dist
+.idea
 
