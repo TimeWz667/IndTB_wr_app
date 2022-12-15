@@ -8,9 +8,11 @@ build/Release
 # Dependency directories
 node_modules/
 
+
 # dotenv environment variables file
 .env
 .env.test
 
 # vuepress build output
 .vuepress/dist
+
