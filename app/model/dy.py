@@ -1,7 +1,7 @@
 from scipy.integrate import solve_ivp
 import numpy as np
 from pydantic import BaseModel
-
+from pydantic.types import confloat
 
 __author__ = 'Chu-Chang Ku'
 __all__ = ['Intervention', 'Model']
@@ -14,8 +14,12 @@ class I:
     Rec = 3
 
 
+class BC(BaseModel):
+    prot: confloat(le=1, ge=0) = 0
+
+
 class Intervention(BaseModel):
-    prot: float = 0
+    BC: BC = BC()
     t_intv: int = 6
 
 
@@ -31,7 +35,7 @@ class Model:
         foi = y[I.Inf] / y.sum() * pars['beta']
 
         if t >= intv.t_intv:
-            foi *= (1 - intv.prot)
+            foi *= (1 - intv.BC.prot)
 
         s, e, i, r = y
         dy[I.Sus] = - foi * s
@@ -73,12 +77,14 @@ if __name__ == '__main__':
         'dr': 0.03
     }
 
-    i0 = Intervention(prot=0.1)
+    i0 = None
 
     ms0 = model.simulate_onward(p0, intv=i0)
     print(ms0[-1])
 
-    i1 = Intervention(prot=0.8)
+    i1 = Intervention.parse_obj({
+        'BC': {'prot': 0.8}
+    })
 
     ms1 = model.simulate_onward(p0, intv=i1)
     print(ms1[-1])
