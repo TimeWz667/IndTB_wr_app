@@ -1,9 +1,7 @@
-from typing import Union
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware  # NEW
 import numpy.random as rd
 from app.repo import Database
-from app.model.dy import Intervention
 from app.facade import Simulator
 
 simulator = Simulator("")
