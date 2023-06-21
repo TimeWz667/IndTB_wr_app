@@ -19,7 +19,19 @@ def list_locations():
 
 
 def get_schema_intv():
-    return Intervention.schema_json()
+    return [
+      {
+        'Name': "SocDist",
+        'Desc': "Social distancing",
+        'Clicked': False,
+        'Pars': [
+          {
+            'name': "BetaRed", 'label': "Reduction in transmission", 'value': 0, 'min': 0, 'max': 0.2
+          }
+        ]
+      }
+    ]
+
 
 
 def get_metadata(location):

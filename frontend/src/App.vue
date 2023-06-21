@@ -3,6 +3,7 @@
     <div class="row">
         <div class="col-md-4">
             <q-inputs
+                    :IntvForm="intvs"
                     :locations="locations"></q-inputs>
         </div>
         <div class="col-md-8">
@@ -32,7 +33,8 @@ export default {
     return {
         baseline: [],
         intervention: [],
-        locations: []
+        locations: [],
+        intvs: []
     }
   },
   methods: {
@@ -43,6 +45,16 @@ export default {
               .catch((error) => {
                   console.error(error);
               });
+      },
+      get_intvform() {
+          return axios.get("/intv/").then((res) => {
+              this.intvs = res.data;
+          })
+            .catch((error) => {
+                console.error(error);
+            });
+
+
       },
       get_baseline() {
           return axios.get("/run/India/").then((res) => {
@@ -63,6 +75,7 @@ export default {
   },
     mounted() {
       this.get_locations();
+      this.get_intvform();
       this.get_baseline();
       this.get_intervention({BetaRed: 0})
     }

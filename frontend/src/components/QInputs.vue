@@ -15,12 +15,30 @@
                 <p>{{selected}}</p>
             </div>
         </div>
-        <div class="card">
+        <div id="ctrl" class="card">
             <div class="card-header">
                 <h3>Intervention</h3>
             </div>
             <div class="card-body">
+                <form id="intv">
+                    <div class="action" v-for="(intv, i) in IntvForm" :key="i">
+                        <div class="form-switch">
+                            <input class="form-check-input" role="switch" type="checkbox" :id="i" v-model="intv.Clicked">
+                            <label class="form-check-label" v-b-toggle="'intv'+i"><p><b>{{ `&nbsp;${intv.Desc} &#9432;` }}</b></p></label>
 
+                            <div class="from-group  bg-light" v-for="(par, j) in intv.Pars" :key="j">
+                                <label :for="i + par.name" size="sm">{{par.label + " " + Math.round(par.value * 100) + "%"}}</label>
+                                <input class="form-control" :id="i + par.name" :name="par.name" type="range" :min="par.min" :max="par.max" step="0.01"
+                                       v-model="par.value">
+                            </div>
+                        </div>
+                    </div>
+
+<!--                    <b-button-group style="padding-top: 20pt" class="d-flex">-->
+<!--                        <button type="submit" class="btn btn-info" v-on:click="updateInterventions">Submit</button>-->
+<!--                        <button type="submit" class="btn btn-warning" v-on:click="resetInterventions">Reset</button>-->
+<!--                    </b-button-group>-->
+                </form>
             </div>
         </div>
         <div id="mem" class="card">
@@ -63,6 +81,12 @@ export default {
             type: Array,
             default() {
                 return ["India", "Delhi"]
+            }
+        },
+        IntvForm: {
+            type: Array,
+            default() {
+                return [];
             }
         }
     },
