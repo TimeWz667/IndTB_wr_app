@@ -1,30 +1,51 @@
 <template>
 <!--  <img alt="Vue logo" src="./assets/logo.png">-->
-  <h3>Baseline</h3>
-  {{baseline}}
+    <div class="row">
+        <div class="col-md-4">
+            <q-inputs
+                    :locations="locations"></q-inputs>
+        </div>
+        <div class="col-md-8">
+            <q-trends
+                    :baseline="baseline"
+                    :intervention="intervention"></q-trends>
+        </div>
+    </div>
 
-  <h3>Intervention</h3>
-  {{intervention}}
+
+
+
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
+import QInputs from './components/QInputs.vue'
+import QTrends from './components/QTrends.vue'
 import axios from 'axios';
 
 export default {
   name: 'App',
   components: {
-    // HelloWorld
+      QInputs,
+      QTrends
   },
-    data() {
-      return {
-          baseline: [],
-          intervention: []
-      }
-    },
+  data() {
+    return {
+        baseline: [],
+        intervention: [],
+        locations: []
+    }
+  },
   methods: {
+      get_locations() {
+          return axios.get("/locs/").then((res) => {
+              this.locations = res.data;
+          })
+              .catch((error) => {
+                  console.error(error);
+              });
+      },
       get_baseline() {
-          return axios.get("/India/").then((res) => {
+          return axios.get("/run/India/").then((res) => {
               this.baseline = res.data;
           })
               .catch((error) => {
@@ -32,7 +53,7 @@ export default {
               });
       },
       get_intervention(intv) {
-          return axios.put("/India/", intv).then((res) => {
+          return axios.put("/run/India/", intv).then((res) => {
               this.intervention = res.data;
           })
               .catch((error) => {
@@ -41,8 +62,9 @@ export default {
       }
   },
     mounted() {
+      this.get_locations();
       this.get_baseline();
-      this.get_intervention({})
+      this.get_intervention({BetaRed: 0})
     }
 }
 </script>

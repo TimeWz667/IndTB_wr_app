@@ -1,10 +1,10 @@
 from scipy.integrate import solve_ivp
 import numpy as np
 from pydantic.types import confloat
-from pydantic import BaseModel
+from pydantic import BaseModel, schema_json_of
 
 __author__ = 'Chu-Chang Ku'
-__all__ = ['Model']
+__all__ = ['Model', 'Intervention']
 
 
 class Model:
@@ -16,7 +16,7 @@ class Model:
         n = y.sum()
         beta, r_rec, r_die = pars['beta'], pars['r_rec'], pars['r_die']
         if intv is not None and t > 3:
-            beta = beta * (1 - intv.BetaRed)
+            beta = beta * (1 - intv.SocDist.BetaRed)
         foi = beta * i / n
 
         dy = np.array([
@@ -32,7 +32,7 @@ class Model:
         n = y.sum()
         beta, r_rec, r_die = pars['beta'], pars['r_rec'], pars['r_die']
         if intv is not None and t > 3:
-            beta = beta * (1 - intv.BetaRed)
+            beta = beta * (1 - intv.SocDist.BetaRed)
         foi = beta * i / n
 
         return {
@@ -50,8 +50,12 @@ class Model:
         return ms
 
 
-class Intervention(BaseModel):
+class SocDist(BaseModel):
     BetaRed: confloat(ge=0, le=0.2) = 0
+
+
+class Intervention(BaseModel):
+    SocDist: SocDist = SocDist()
 
 
 if __name__ == '__main__':
@@ -61,16 +65,14 @@ if __name__ == '__main__':
         'r_die': 0.05
     }
 
-    print(Intervention.schema_json())
-
     mod = Model()
 
     ms0 = mod.simulate(p, intv=None)
 
-    intv1 = Intervention.parse_obj({'BetaRed': 0.05})
+    intv1 = Intervention.parse_obj({'SocDist': {'BetaRed': 0.05}})
     ms1 = mod.simulate(p, intv=intv1)
 
-    intv2 = Intervention.parse_obj({'BetaRed': 0.1})
+    intv2 = Intervention.parse_obj({'SocDist': {'BetaRed': 0.1}})
     ms2 = mod.simulate(p, intv=intv2)
 
     for m0, m1, m2 in zip(ms0, ms1, ms2):

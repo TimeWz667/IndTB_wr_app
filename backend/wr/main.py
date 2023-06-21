@@ -1,7 +1,17 @@
+from wr.dy.sir import Model, Intervention
+
 __all__ = ['list_locations',
            'get_schema_intv',
            'get_metadata',
            'run_baseline', 'run_intervention']
+
+
+mod = Model()
+p0 = {
+        'beta': 1.5,
+        'r_rec': 0.2,
+        'r_die': 0.05
+    }
 
 
 def list_locations():
@@ -9,7 +19,7 @@ def list_locations():
 
 
 def get_schema_intv():
-    return []
+    return Intervention.schema_json()
 
 
 def get_metadata(location):
@@ -17,15 +27,8 @@ def get_metadata(location):
 
 
 def run_baseline(location: str, time_end: int):
-    return [
-        {'Year': 2023, 'IncR': 0.003, 'MorR': 0.0003},
-        {'Year': 2025, 'IncR': 0.0025, 'MorR': 0.00025},
-    ]
+    return mod.simulate(p0)
 
 
 def run_intervention(location: str, time_end: int, intv: dict):
-    return [
-        {'Year': 2023, 'IncR': 0.003, 'MorR': 0.0003},
-        {'Year': 2025, 'IncR': 0.002, 'MorR': 0.0002},
-    ]
-
+    return mod.simulate(p0, intv=Intervention.parse_obj(intv))
