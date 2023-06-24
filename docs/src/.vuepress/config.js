@@ -21,11 +21,6 @@ module.exports = {
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }]
   ],
 
-  /**
-   * Theme configuration, here is the default theme configuration for VuePress.
-   *
-   * ref：https://v1.vuepress.vuejs.org/theme/default-theme-config.html
-   */
   themeConfig: {
     repo: '',
     editLinks: false,
@@ -34,20 +29,32 @@ module.exports = {
     lastUpdated: false,
     nav: [
       {
-        text: 'WarRoom',
-        link: '/warroom/'
+        text: 'War Room',
+        link: '/warroom/',
       },
+      {
+        text: 'Docs',
+        link: '/docs/'
+      }
     ],
     sidebar: {
       '/warroom/': [
         '',
       ],
+      '/docs/': [
+        {
+          title: 'Docs',
+          collapsable: false,
+          children: [
+            '',
+            'activeTB',
+            'ltbi',
+            'dx',
+          ]
+        }
+      ],
     }
   },
-
-  /**
-   * Apply plugins，ref：https://v1.vuepress.vuejs.org/zh/plugin/
-   */
   plugins: [
     '@vuepress/plugin-back-to-top',
     '@vuepress/plugin-medium-zoom',

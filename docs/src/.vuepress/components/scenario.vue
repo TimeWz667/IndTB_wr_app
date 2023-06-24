@@ -2,7 +2,7 @@
 <div>
   <h3></h3>
   <div class="row">
-    <div class="col-8">
+    <div class="col-4">
       <div class="row">
         <h4>Selectors</h4>
         <div id="ctrl">
@@ -71,7 +71,7 @@
       </div>
 
     </div>
-    <div class="col-4">
+    <div class="col-8">
       <h4>Value</h4>
       <h5>Intervention: </h5>
       <p>{{CurrText}}</p>
