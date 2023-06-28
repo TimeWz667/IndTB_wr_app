@@ -1,36 +1,68 @@
 <template>
 <div>
     <div class="d-grid">
-        <button class="btn btn-info btn-block" data-bs-toggle="collapse" data-bs-target="#loc">Location</button>
+        <button class="btn btn-info btn-block" data-bs-toggle="collapse" data-bs-target="#loc">
+            {{ `&nbsp;${CurLoc}: ${YearStart} - ${YearEnd}` }}</button>
         <div id="loc" class="collapse show">
             <div class="container">
                 <form>
-                Location (current: {{i}}})
-              <select class="form-select">
-                  <option>1</option>
-                  <option>2</option>
-                </select>
-              <div class="form-check mb-3">
-                <label class="form-check-label">
-                  <input class="form-check-input" type="checkbox" name="remember"> Show 2015-
-                </label>
-              </div>
-              <button type="submit" class="btn btn-primary" v-on:click="">Update</button>
-            </form>
-            </div>
+                    <select class="form-select" v-model="CurLoc">
+                        <option v-for="(loc, i) in Locations" :key="i" :value="loc">{{ loc }}</option>
+                    </select>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="y0_2015" value="2015" name="y0" v-model="YearStart" checked>
+                        <label class="form-check-label" for="y0_2015">2015~</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="y0_2022" value="2022" name="y0" v-model="YearStart">
+                        <label class="form-check-label" for="y0_2022">2022~</label>
+                    </div>
 
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="y1_2030" value="2030" name="y1" v-model="YearEnd" checked>
+                        <label class="form-check-label" for="y1_2030">~2030</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="y1_2035" value="2035" name="y1" v-model="YearEnd">
+                        <label class="form-check-label" for="y1_2035">~2035</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary" v-on:click="updateSettings">Update</button>
+                </form>
+            </div>
         </div>
     </div>
     <div class="d-grid pt-2">
         <button class="btn btn-info btn-block" data-bs-toggle="collapse" data-bs-target="#intv">Interventions</button>
         <div id="intv" class="collapse show">
-            Form
+            <form>
+                <div class="action" v-for="(intv, i) in IntvForm" :key="i">
+                    <div class="form-switch">
+                        <input class="form-check-input" role="switch" type="checkbox" :id="i" v-model="intv.Clicked">
+                        <label class="form-check-label" :for="i"><h5>{{ `&nbsp;${intv.Desc} &#9432;` }}</h5></label>
+                    </div>
+
+                    <div class="from-group" v-for="par in intv.Pars" :key="par.name">
+                        <label :for="i + par.name" size="sm">{{par.label + " " + Math.round(par.value * 100) + "%"}}</label>
+                        <input class="form-control" :id="i + par.name" :name="par.name" type="range" :min="par.min" :max="par.max" step="0.01"
+                               v-model="par.value">
+                    </div>
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic example" style="padding-top: 20pt">
+                    <!--                <button type="submit" class="btn btn-info" v-on:click="revertIntv">Last</button>-->
+                    <button type="submit" class="btn btn-primary" v-on:click="updateIntv">Update</button>
+                    <button type="submit" class="btn btn-warning" v-on:click="resetIntv">Reset</button>
+                </div>
+            </form>
         </div>
     </div>
     <div class="d-grid pt-2">
         <button class="btn btn-info btn-block" data-bs-toggle="collapse" data-bs-target="#mem">Memento</button>
         <div id="mem" class="collapse show">
-            Form
+            <div class="btn-group" role="group" aria-label="Basic example" style="padding-top: 20pt">
+<!--                <button type="submit" class="btn btn-info" v-on:click="revertIntv">Last</button>-->
+                <button type="submit" class="btn btn-primary" v-on:click="updateIntv">Update</button>
+                <button type="submit" class="btn btn-warning" v-on:click="resetIntv">Reset</button>
+            </div>
         </div>
     </div>
 </div>
@@ -38,7 +70,47 @@
 
 <script>
 export default {
-    name: "controller"
+    name: "controller",
+    props: {
+        Locations: {
+            type: Array,
+            required: true
+        },
+        IntvForm: {
+            type: Array,
+            required: true
+        }
+    },
+    data: function() {
+        return {
+            CurLoc: this.Locations[0],
+            YearStart: 2022,
+            YearEnd: 2030
+        }
+    },
+    methods: {
+        updateSettings(evt) {
+            evt.preventDefault();
+            const res = { Location: this.CurLoc, YearStart: +this.YearStart, YearEnd: +this.YearEnd };
+            this.$emit("settings_update", res);
+        },
+        updateIntv(evt) {
+            evt.preventDefault();
+            const res = this.IntvForm
+                .filter(d => d.Clicked)
+                .reduce((prev, d) => {
+                    prev[d.Name] = d.Pars
+                        .reduce((collector, x) => {collector[x.name] = x.value; return collector}, {});
+                    return prev;
+                }, {})
+
+            this.$emit("intv_update", res);
+        },
+        resetIntv(evt) {
+            evt.preventDefault();
+            this.$emit("intv_reset");
+        }
+    }
 }
 </script>
 
