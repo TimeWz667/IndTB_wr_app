@@ -2,6 +2,6 @@
 sidebar: false
 ---
 
-# War room TB
+# War Room
 
 <scenario></scenario>

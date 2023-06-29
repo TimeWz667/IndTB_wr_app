@@ -9,7 +9,7 @@
   },
   "repository": "/wr_app",
   "scripts": {
-    "dev": "vuepress dev src",
+    "dev_webpage": "vuepress dev src",
     "build": "vuepress build src"
   },
   "license": "MIT",
@@ -19,6 +19,6 @@
   "dependencies": {
     "bootstrap": "^5.3.0",
     "bootstrap-vue": "^2.23.1",
-    "d3": "^7.8.5",
+    "d3": "^7.8.5"
   }
 }

@@ -236,8 +236,14 @@ export default {
 
             this.calc_mlu(this.Mortality.Baseline, this.Mortality.M0, this.Mortality.LU0);
 
-            this.layout_inc.yaxis.range[1] = this.Incidence.Baseline[0].U;
-            this.layout_mor.yaxis.range[1] = this.Mortality.Baseline[0].U;
+            if (this.Incidence.Baseline.length > 0) {
+                this.layout_inc.yaxis.range[1] = this.Incidence.Baseline[0].U;
+                this.layout_mor.yaxis.range[1] = this.Mortality.Baseline[0].U;
+            } else {
+                this.layout_inc.yaxis.range[1] = 200;
+                this.layout_mor.yaxis.range[1] = 40;
+            }
+
         },
         update1 () {
             this.Incidence.Intervention = this.Curr1
