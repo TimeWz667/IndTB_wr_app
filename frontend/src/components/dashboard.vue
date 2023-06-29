@@ -1,6 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row">
+<!--            <div class="col-md-12">{{ IntvParsed }}</div>-->
             <div class="col-md-4">
                 <controller
                   :Locations="Locations"
@@ -13,8 +14,6 @@
             <div class="col-md-8">
                 <trajectory :Curr0="SimBaseline" :Curr1="SimIntv" :Year0="Settings.YearStart" :Year1="Settings.YearEnd"/>
             </div>
-            <div class="col-md-6">{{ IntvCurr }}</div>
-            <div class="col-md-6">{{ IntvForm }}</div>
         </div>
     </div>
 </template>
@@ -41,6 +40,7 @@ export default {
             IntvForm: intvs,
             Intv0: i0,
             IntvCurr: i0,
+            IntvParsed: {},
             SimBaseline: [],
             SimIntv: [],
             Keeps: {}
@@ -55,12 +55,12 @@ export default {
         },
         async runIntv(intv) {
             const i = this.parseInterventions(intv);
+            this.IntvParsed = i;
             console.log(i);
             this.SimIntv = await axios.put("/run/" + this.Settings.Location, i).then(d => d.data);
         },
         updateSettings(evt) {
             const loc_changed = (evt.Location === this.Settings.Location);
-            console.log(evt);
             this.Settings = evt;
 
             if (loc_changed) {
@@ -84,7 +84,21 @@ export default {
               .filter(d => d.Clicked)
               .reduce((prev, d) => {
                   prev[d.Name] = d.Pars
-                    .reduce((collector, x) => {collector[x.name] = +x.value; return collector}, {});
+                    .reduce((collector, x) => {
+                        switch(x.type) {
+                            case "bool":
+                                collector[x.name] = x.value;
+                                break;
+                            case "choice":
+                                collector[x.name] = x.value;
+                                break;
+                            default:
+                                collector[x.name] = +x.value;
+                                break;
+
+                        }
+                        return collector;
+                    }, {});
                   return prev;
               }, {});
         }

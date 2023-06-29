@@ -15,7 +15,8 @@
     "d3": "^7.8.5",
     "plotly.js-dist-min": "^2.24.2",
     "sass": "^1.63.6",
-    "vue": "^3.2.47"
+    "vue": "^3.2.47",
+    "vue-resize-directive": "^1.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

@@ -23,7 +23,7 @@
                         <label class="form-check-label" for="y1_2030">~2030</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="y1_2035" value="2035" name="y1" v-model="YearEnd">
+                        <input class="form-check-input" type="radio" id="y1_2035" value="2035" name="y1" v-model="YearEnd" disabled>
                         <label class="form-check-label" for="y1_2035">~2035</label>
                     </div>
                     <button type="submit" class="btn btn-primary" v-on:click="updateSettings">Update</button>
@@ -35,28 +35,45 @@
         <button class="btn btn-info btn-block" data-bs-toggle="collapse" data-bs-target="#intv">Interventions</button>
         <div id="intv" class="collapse show">
             <form>
-                <div class="action" v-for="(intv, i) in IntvForm" :key="i">
-                    <div class="form-switch">
-                        <input class="form-check-input" role="switch" type="checkbox" :id="i" v-model="intv.Clicked">
-                        <label class="form-check-label" :for="i"><h5>{{ `&nbsp;${intv.Desc} &#9432;` }}</h5></label>
-                    </div>
+                <div class="form_intv">
+                    <div class="action" v-for="(intv, i) in IntvForm" :key="i">
+                        <div class="form-switch">
+                            <input class="form-check-input" role="switch" type="checkbox" :id="i" v-model="intv.Clicked">
+                            <label class="form-check-label" :for="i"><h5>{{ `&nbsp;${intv.Desc} &#9432;` }}</h5></label>
+                        </div>
 
-                    <div class="from-group" v-for="par in intv.Pars" :key="par.name">
-                        <label :for="i + par.name" size="sm">{{par.label + " " + Math.round(par.value * 100) + "%"}}</label>
-                        <input class="form-control" :id="i + par.name" :name="par.name" type="range" :min="par.min" :max="par.max" step="0.01"
-                               v-model="par.value">
+                        <div class="from-group" v-for="par in intv.Pars" :key="par.name">
+                            <div v-if="par.type === 'bool'">
+                                <input class="form-check-input" :id="i + par.name" :name="par.name" type="checkbox"
+                                       v-model="par.value">
+                                <label :for="i + par.name" size="sm">{{par.label}}</label>
+                            </div>
+                            <div v-else-if="par.type === 'choice'">
+                                <div class="form-check form-check-inline" v-for="(op, j) in par.values">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" :id="'inlineRadio' + j"
+                                           :value="op" v-model="par.value">
+                                    <label class="form-check-label" :for="'inlineRadio' + j">{{ op }}</label>
+                                </div>
+                            </div>
+                            <div v-else>
+                                <label :for="i + par.name" size="sm">{{par.label + " " + par.fmt(par.value)}}</label>
+                                <input class="form-control" :id="i + par.name" :name="par.name" type="range"
+                                       :min="par.min" :max="par.max" :step="par.step"
+                                       v-model="par.value">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="btn-group" role="group" aria-label="Basic example" style="padding-top: 20pt">
                     <!--                <button type="submit" class="btn btn-info" v-on:click="revertIntv">Last</button>-->
-                    <button type="submit" class="btn btn-primary" v-on:click="updateIntv">Update</button>
+                    <button type="submit" class="btn btn-primary" v-on:click="updateIntv">Run</button>
                     <button type="submit" class="btn btn-warning" v-on:click="resetIntv">Reset</button>
                 </div>
             </form>
         </div>
     </div>
     <div class="d-grid pt-2">
-        <button class="btn btn-info btn-block" data-bs-toggle="collapse" data-bs-target="#mem">Memento</button>
+        <button class="btn btn-info btn-block" data-bs-toggle="collapse" data-bs-target="#mem">Mementos</button>
         <div id="mem" class="collapse show">
             <div class="btn-group" role="group" aria-label="Basic example" style="padding-top: 20pt">
 <!--                <button type="submit" class="btn btn-info" v-on:click="revertIntv">Last</button>-->
@@ -117,5 +134,10 @@ export default {
 <style scoped>
 .btn {
     text-align: left;
+}
+
+.form_intv {
+    overflow-y: scroll;
+    height: 300pt;
 }
 </style>
