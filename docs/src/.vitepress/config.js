@@ -120,6 +120,7 @@ export default defineConfig({
         text: 'TB dynamics',
         items: [
           { text: 'Overview', link: '/docs/index.html' },
+          { text: 'Demography', link: '/docs/demography.html' },
           { text: 'Active TB', link: '/docs/activeTB.html' },
           { text: 'Transmission', link: '/docs/transmission.html' },
           { text: 'Latent TB', link: '/docs/ltbi.html' },
