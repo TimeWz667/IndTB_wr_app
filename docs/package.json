@@ -9,16 +9,19 @@
   },
   "repository": "/wr_app",
   "scripts": {
-    "dev_webpage": "vuepress dev src",
-    "build": "vuepress build src"
+    "docs:dev": "vitepress dev src",
+    "docs:build": "vitepress build src",
+    "docs:preview": "vitepress preview src"
   },
   "license": "MIT",
   "devDependencies": {
-    "vuepress": "^1.5.3"
+    "vitepress": "^1.0.0-beta.5"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
-    "bootstrap-vue": "^2.23.1",
-    "d3": "^7.8.5"
+    "d3": "^7.8.5",
+    "sass": "^1.63.6"
   }
 }

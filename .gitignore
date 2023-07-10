@@ -8,6 +8,9 @@ build/Release
 # Dependency directories
 node_modules/
 
+frontend/node_modules/
+docs/node_modules/
+docs/src/.vitepress/cache
 
 # dotenv environment variables file
 .env

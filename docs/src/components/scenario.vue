@@ -22,4 +22,7 @@ export default {
     width: 100%;
     height: 700pt;
 }
+
+
 </style>
+

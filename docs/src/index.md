@@ -1,13 +1,27 @@
 ---
-home: true
-heroImage: https://v1.vuepress.vuejs.org/hero.png
-tagline: 
-actionText: Quick Start →
-actionLink: /warroom/
+# https://vitepress.dev/reference/default-theme-home-page
+layout: home
+
+hero:
+  name: "War Room"
+  text: "for the Tuberculosis in India"
+  actions:
+    - theme: brand
+      text: App
+      link: /markdown-examples
+    - theme: alt
+      text: Model docs
+      link: /tutorial
+    - theme: alt
+      text: Tutorial
+      link: /api-examples
+
 features:
-- title: Feature 1 Title
-  details: Feature 1 Description
-- title: Feature 2 Title
-  details: Feature 2 Description
-footer: Made by Chu-Chang Ku with ❤️
+  - title: Nikshay
+    details: Nikshay integrated
+  - title: Feature B
+    details: Intevention
+  - title: Feature C
+    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
+
