@@ -1,17 +1,5 @@
----
-aside: false
----
-
-<script setup>
-  import scenario from '../components/scenario.vue'
-</script>
-
-<style>
-.content-container {
-    max-width: 100% !important;
-}
-</style>
 
 # War Room
 
-<scenario></scenario>
+Access from [link](https://beta-dashboards.nikshay.in/uat/tb_modelling/?state_name=India&year=null)
+![War Room model screenshot](/wr_snapshot.png)

@@ -1,5 +1,4 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
@@ -8,13 +7,13 @@ hero:
   actions:
     - theme: brand
       text: App
-      link: /markdown-examples
+      link: /warroom/index
+    - theme: alt
+      text: Tutorials
+      link: /tutorial/index
     - theme: alt
       text: Model docs
-      link: /tutorial
-    - theme: alt
-      text: Tutorial
-      link: /api-examples
+      link: /docs/index
 
 features:
   - title: Nikshay
