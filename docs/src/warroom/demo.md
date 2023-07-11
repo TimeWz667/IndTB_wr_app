@@ -9,4 +9,5 @@ aside: false
 
 # Demonstration version
 
+This is a test version for the war-room model
 <scenario></scenario>

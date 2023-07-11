@@ -114,7 +114,8 @@ export default defineConfig({
       {
         text: 'Intervention models',
         items: [
-          { text: 'Treatment outcomes', link: '/tutorial/index.html' }
+          { text: 'Overview', link: '/tutorial/index.html' },
+          { text: 'Treatment outcomes', link: '/tutorial/txout.html' }
         ]
       },
       {
@@ -130,7 +131,7 @@ export default defineConfig({
       },
     ],
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/TimeWz667/IndTB_wr_app' }
     ]
   },
   markdown: {
