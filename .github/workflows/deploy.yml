@@ -24,7 +24,6 @@ jobs:
           cache: yarn
           cache-dependency-path: docs/yarn.lock
       - run: yarn install --frozen-lockfile
-      - run: npm ci
       - name: Build
         working-directory: ./docs
         run: yarn docs:build
