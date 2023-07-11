@@ -21,14 +21,17 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: npm
+          cache: yarn
+      - run: yarn install --frozen-lockfile
       - run: npm ci
       - name: Build
-        run: npm run docs:build
+        working-directory: ./docs
+        run: yarn docs:build
       - uses: actions/configure-pages@v2
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: docs/src/.vitepress/dist
+          path: docs/public
       - name: Deploy
+        working-directory: ./docs
         id: deployment
         uses: actions/deploy-pages@v1
