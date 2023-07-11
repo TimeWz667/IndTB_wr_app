@@ -95,6 +95,7 @@ export default defineConfig({
   title: "War Room",
   description: "Webapp for the War Room India",
   outDir: '../public',
+  base: '/IndTB_wr_app/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [

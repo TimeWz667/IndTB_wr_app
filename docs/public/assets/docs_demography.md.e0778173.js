@@ -1,0 +1,1 @@
+import{_ as e,o as t,c as a}from"./chunks/framework.53143706.js";const i=JSON.parse('{"title":"","description":"","frontmatter":{},"headers":[],"relativePath":"docs/demography.md","filePath":"docs/demography.md"}'),o={name:"docs/demography.md"};function r(s,c,d,n,p,m){return t(),a("div")}const f=e(o,[["render",r]]);export{i as __pageData,f as default};
